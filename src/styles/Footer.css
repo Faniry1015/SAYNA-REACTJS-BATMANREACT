@@ -1,0 +1,27 @@
+.footer {
+    padding: 100px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.footer p {
+    font-size: 10px;
+    text-align: center;
+    color: var(--myGreyfull);
+    margin: 20px 0
+}
+
+.footer p img {
+    position: relative;
+    bottom: -10px;
+}
+
+.footer figure {
+    display: flex;
+    align-items: center;
+}
+
+.footer figure img{
+    margin: 0 10px;
+}
