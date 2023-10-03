@@ -1,5 +1,5 @@
 import {React, useState} from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate, Link, NavLink } from 'react-router-dom'
 import { UserAuth } from '../context/AuthContext'
 import "../styles/signup.css"
 
@@ -44,18 +44,23 @@ const { email, password, error } = state
                             <h2>Connexion</h2>
                             <p>
                                 Vous n'avez pas encore de compte compte ?
-                                <Link to="/signup"> Créez un compte ici!</Link>
+                                <Link to="/signup"> Créer un compte ici!</Link>
                             </p>
                         </div>
                         <div className="form-body">
                             <form type="submit" onSubmit={handleSubmit}> 
                                 <div className="mb-3">
-                                    <label htmlFor="email" className="form-label">Identifiant</label>
+                                    <label htmlFor="email" className="form-label">Adresse mail</label>
                                     <input type="email" className="form-control" id="email" name='email' placeholder='email' value={email} onChange={handleChange} />
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="password" className="form-label">Mot de passe</label>
                                     <input type="password" className="form-control" id="password" placeholder='mot de passe' value={password} onChange={handleChange} />
+                                </div>
+                                <div>
+                                  <Link to='/forgotPassword'>
+                                    Mot de passe oublié ?
+                                  </Link>
                                 </div>
                                 <div className='btnContain'>
                                     <button type="submit" className="btnContain__form">Submit</button>

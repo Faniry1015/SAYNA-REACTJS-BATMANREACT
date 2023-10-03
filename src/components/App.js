@@ -12,6 +12,7 @@ import Login from "../pages/Login";
 import "../styles/App.css";
 import { AuthContextProvider } from "../context/AuthContext";
 import ProtectedRoutes from "./ProtectedRoutes";
+import { ForgotPassword } from "../pages/ForgotPassword";
 
 function App() {
    return (
@@ -29,6 +30,7 @@ function App() {
                      </ProtectedRoutes>} />
                      <Route path="signup" element={<Signup />} />
                      <Route path="login" element={<Login />} />
+                     <Route path="forgotPassword" element={<ForgotPassword />} />
                      <Route path="*" element={<NotFound />} />
                   </Route>
                </Routes>

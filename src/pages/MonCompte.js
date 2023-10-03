@@ -10,7 +10,7 @@ function MonCompte() {
   const deconnecter = async () => {
     try {
       await logout()
-      navigate('/eshop')
+      navigate('/login')
     } catch(e) {
       console.log(e)
     }
