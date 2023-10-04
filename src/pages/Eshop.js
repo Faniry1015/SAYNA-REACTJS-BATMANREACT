@@ -9,11 +9,12 @@ import '../styles/Eshop.css'
 
 function Eshop() {
    const [products, setProducts] = useState([])
-   const [search, setSearch] = useState('')
+   const [visibleProducts, setVisibleProducts] = useState([])
+   const [search, setSearch] = useState(products)
    // const [state, setState] = useState({
    //    products: [],
    //    search: '',
-   //    category: ''
+   //    category: '',
    // })
 
    // Read products data from firebase
@@ -25,6 +26,7 @@ function Eshop() {
             productsArray.push({ id: doc.id, ...doc.data() })
          });
          setProducts(productsArray)
+         setVisibleProducts(productsArray)
          // setState((state, props) => ({ products: productsArray, ...state }))
       } catch (e) {
          console.log(e)
@@ -34,6 +36,10 @@ function Eshop() {
    useEffect(() => {
       getProducts()
    }, [])
+
+   function handleFilter(e) {
+      setVisibleProducts(products.filter(product => product.categorie === e.target.name))
+   }
 
    // const { products, search, category } = state
 
@@ -55,9 +61,9 @@ function Eshop() {
                      <input type="text" className="form-control" placeholder="Rechercher..." id="search" name="search" value={search} onChange={(e) => setSearch(e.target.value)} />
                   </div>
                   <h3>Filtrer par catégorie</h3>
-                  <button className="w-100 mb-3 btnContain__btn">Sac</button>
-                  <button className="w-100 mb-3 btnContain__btn">Vêtements</button>
-                  <button className="w-100 mb-3 btnContain__btn">Equipement</button>
+                  <button className="w-100 mb-3 btnContain__btn" name="equipement" onClick={handleFilter}>Equipement</button>
+                  <button className="w-100 mb-3 btnContain__btn" name="vetement" onClick={handleFilter}>Vêtements</button>
+                  <button className="w-100 mb-3 btnContain__btn" name="sac" onClick={handleFilter}>Sac</button>
                </div>
                <div className="col-md-9">
                   <h3 className="text-center">Nos produits</h3>
@@ -65,7 +71,7 @@ function Eshop() {
                      {
                         products.length >= 1 && (
                            <div className="product-box">
-                              <Products products={products} category={''} />
+                              <Products products={visibleProducts} category={''} />
                            </div>
                         )
                      }
