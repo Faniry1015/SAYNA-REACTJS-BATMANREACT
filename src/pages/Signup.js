@@ -2,7 +2,6 @@ import { React, useRef, useState } from 'react'
 import { Link, useNavigate } from "react-router-dom"
 import "../styles/signup.css"
 import { UserAuth } from '../context/AuthContext'
-import { Alert } from 'bootstrap'
 
 function Signup() {
     const defaultState = {
@@ -25,9 +24,9 @@ function Signup() {
 
     function handleChange(e) {
         if (e.target.type === "checkbox") {
-            setState((state, props) => ({ ...state, checked: e.target.checked }))
+            setState((state, props) => ({  checked: e.target.checked, ...state }))
         } else {
-            setState((state, props) => ({ ...state, [e.target.id]: e.target.value }))
+            setState((state, props) => ({ [e.target.id]: e.target.value, ...state }))
         }
     }
 
@@ -57,7 +56,7 @@ function Signup() {
             <section id='hero'>
                 <div className="hero-signup-image">
                     <div className="container">
-                        <h1 className="herotitle text-uppercase text-white"></h1>
+                        {/* <h1 className="herotitle text-uppercase text-white"></h1> */}
                         <section className="inscription">
                             <div className="container formulaire">
                                 <div className="head text-center">

@@ -6,8 +6,8 @@ function Products({ products }) {
     return (
         <>
             {products.map(product => {
-                return <div className="col-md-4">
-                    <ProductItem key={product.id} product={product} />
+                return <div key={product.id} className="col-md-4">
+                    <ProductItem  product={product} />
                 </div>
             })}
         </>

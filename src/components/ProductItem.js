@@ -15,7 +15,9 @@ function ProductItem({ product }) {
                         <span>{prix} $</span><span><del>{prix - 5}</del></span>
                     </div>
                 </div>
-                <button className='btnContain__btn'>Ajouter</button>
+                <div className=''>
+                <button className='btnContain__btn add-to-cart mt-3 w-100 '>Ajouter</button>
+                </div>
             </div>
         </>
     )

@@ -10,25 +10,32 @@ import '../styles/Eshop.css'
 function Eshop() {
    const [products, setProducts] = useState([])
    const [search, setSearch] = useState('')
+   // const [state, setState] = useState({
+   //    products: [],
+   //    search: '',
+   //    category: ''
+   // })
 
    // Read products data from firebase
-
    const getProducts = async () => {
       const productsArray = []
-      
-      const querySnapshot = await getDocs(collection(db, "produits"));
-      querySnapshot.forEach((doc) => {
-         productsArray.push({id: doc.id, ...doc.data()})
+      try {
+         const querySnapshot = await getDocs(collection(db, "produits"));
+         querySnapshot.forEach((doc) => {
+            productsArray.push({ id: doc.id, ...doc.data() })
+         });
          setProducts(productsArray)
-         // doc.data() is never undefined for query doc snapshots
-         // console.log(doc.id, " => ", doc.data());
-      });
-      console.log(productsArray)
+         // setState((state, props) => ({ products: productsArray, ...state }))
+      } catch (e) {
+         console.log(e)
+      }
    }
 
    useEffect(() => {
       getProducts()
    }, [])
+
+   // const { products, search, category } = state
 
    return (
       <>
@@ -53,16 +60,23 @@ function Eshop() {
                   <button className="w-100 mb-3 btnContain__btn">Equipement</button>
                </div>
                <div className="col-md-9">
-               <h3 className="text-center">Nos produits</h3>
-               <section id="products">
-                  {
-                     products.length >= 1  && (
-                        <div className="product-box">
-                           <Products products={products} />
-                        </div>
-                     )
-                  }
-               </section>
+                  <h3 className="text-center">Nos produits</h3>
+                  <section id="products">
+                     {
+                        products.length >= 1 && (
+                           <div className="product-box">
+                              <Products products={products} category={''} />
+                           </div>
+                        )
+                     }
+                     {
+                        products.length < 1 && (
+                           <div className="productLoader">
+                              <h6><i className="fa-solid fa-spinner fa-spin-pulse fa-10x" style={{ color: "#e1e100", }}></i></h6>
+                           </div>
+                        )
+                     }
+                  </section>
                </div>
             </div>
          </div>
