@@ -167,6 +167,7 @@ section {
   width: 200px;
   padding: 10px;
   margin: 0 10px;
+  border: none;
   background: linear-gradient(80deg, #EDDEBF75, #89000880);
 }
 

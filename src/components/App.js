@@ -9,6 +9,7 @@ import MonCompte from "../pages/MonCompte.js";
 import NotFound from "../pages/NotFound";
 import Signup from "../pages/Signup";
 import Login from "../pages/Login";
+import Cart from "../pages/Cart";
 import "../styles/App.css";
 import { AuthContextProvider } from "../context/AuthContext";
 import ProtectedRoutes from "./ProtectedRoutes";
@@ -28,6 +29,7 @@ function App() {
                      <ProtectedRoutes route="login">
                         <MonCompte />
                      </ProtectedRoutes>} />
+                     <Route path="cart" element={<Cart />} />
                      <Route path="signup" element={<Signup />} />
                      <Route path="login" element={<Login />} />
                      <Route path="forgotPassword" element={<ForgotPassword />} />

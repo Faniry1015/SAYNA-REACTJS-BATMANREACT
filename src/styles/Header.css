@@ -1,5 +1,5 @@
-.header a[class ='.active'] {
-    /*HOME en gras et souligné sur la page active*/
+.header .active {
+   /*gras et souligné sur la page active*/
     color: var(--myYellow);
     text-shadow: 1px 0 0 var(--myYellow);
     text-decoration-line: underline;
