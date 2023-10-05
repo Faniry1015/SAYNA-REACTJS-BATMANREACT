@@ -1,7 +1,18 @@
 import React from 'react'
 import '../styles/ProductItem.css'
+import { UserAuth } from '../context/AuthContext'
 
-function ProductItem({ product }) {
+function ProductItem({ product, addToCart }) {
+    const {user} = UserAuth()
+
+    const handleAddToCart = () => {
+        if (user) {
+            addToCart(product)
+        } else {
+            alert('Connectez vous ou créez un compte pour pouvoir passer commande')
+        }
+    }
+
     const { nom, imgUrl, description, categorie, prix } = product;
     return (
         <>
@@ -16,7 +27,7 @@ function ProductItem({ product }) {
                     </div>
                 </div>
                 <div className=''>
-                <button className='btnContain__btn add-to-cart mt-3 w-100 '>Ajouter</button>
+                    <button className='add-to-cart mt-3 w-100 ' onClick={handleAddToCart}>Ajouter</button>
                 </div>
             </div>
         </>

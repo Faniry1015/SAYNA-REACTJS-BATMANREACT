@@ -10,3 +10,7 @@
 .productLoader {
     text-align: center;
 }
+
+.btn-category-filter {
+    min-width: 100px;
+}

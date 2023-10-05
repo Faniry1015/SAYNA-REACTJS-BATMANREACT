@@ -1,16 +1,17 @@
 import { React, useEffect, useState } from "react";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, setDoc, doc, updateDoc } from "firebase/firestore";
 import HeroShop from "../components/HeroShop";
 // import Products from "../data/Products";
 import { Link } from "react-router-dom";
 import { db } from "../config-firebase";
 import Products from "../components/Products";
+import { UserAuth } from "../context/AuthContext";
 import '../styles/Eshop.css'
 
 function Eshop() {
    const [products, setProducts] = useState([])
    const [visibleProducts, setVisibleProducts] = useState([])
-   const [search, setSearch] = useState(products)
+   const [search, setSearch] = useState('')
    // const [state, setState] = useState({
    //    products: [],
    //    search: '',
@@ -41,6 +42,38 @@ function Eshop() {
       setVisibleProducts(products.filter(product => product.categorie === e.target.name))
    }
 
+   function handleSearch(e) {
+      const searchCaracter = e.target.value.trim().toLowerCase()
+      if (searchCaracter !== "") {
+         setSearch(e.target.value)
+         setVisibleProducts(products.filter(product => {
+            return product.nom.toLowerCase().includes(searchCaracter) || product.description.toLowerCase().includes(searchCaracter) || product.categorie.toLowerCase().includes(searchCaracter)
+         }))
+      } else {
+         setSearch('')
+         setVisibleProducts(products)
+      }
+   }
+
+   //Ajouter un produit au panier
+   const { user } = UserAuth()
+   let product_cart = {};
+
+   const addToCart = async (product) => {
+      product_cart = product
+      product_cart['quantité'] = 1
+      product_cart['prixTotalArticles'] = product_cart.quantité * product_cart.prix
+      try {
+         // Add a new document with a generated id
+         const cartRef = doc(collection(db, `Cart-${user.uid}`));
+
+         await setDoc(cartRef, product_cart);
+      } catch (e) {
+         console.log(e.message)
+      }
+
+   }
+
    // const { products, search, category } = state
 
    return (
@@ -48,7 +81,7 @@ function Eshop() {
          <HeroShop />
          <section className="container pt-5">
             <div className="float-end">
-               <Link to='/cart'>
+               <Link to='/eshop/cart'>
                   <i className="fa-solid fa-2x fa-cart-plus"></i>
                </Link>
             </div>
@@ -58,12 +91,12 @@ function Eshop() {
                <div className="col-md-3">
                   <h3>Rechercher</h3>
                   <div>
-                     <input type="text" className="form-control" placeholder="Rechercher..." id="search" name="search" value={search} onChange={(e) => setSearch(e.target.value)} />
+                     <input type="text" className="form-control" placeholder="Rechercher..." id="search" name="search" value={search} onChange={handleSearch} />
                   </div>
                   <h3>Filtrer par catégorie</h3>
-                  <button className="w-100 mb-3 btnContain__btn" name="equipement" onClick={handleFilter}>Equipement</button>
-                  <button className="w-100 mb-3 btnContain__btn" name="vetement" onClick={handleFilter}>Vêtements</button>
-                  <button className="w-100 mb-3 btnContain__btn" name="sac" onClick={handleFilter}>Sac</button>
+                  <button className="w-100 mb-3 btn-category-filter" name="equipement" onClick={handleFilter}>Equipement</button>
+                  <button className="w-100 mb-3 btn-category-filter" name="vetement" onClick={handleFilter}>Vêtements</button>
+                  <button className="w-100 mb-3 btn-category-filter" name="sac" onClick={handleFilter}>Sac</button>
                </div>
                <div className="col-md-9">
                   <h3 className="text-center">Nos produits</h3>
@@ -71,7 +104,7 @@ function Eshop() {
                      {
                         products.length >= 1 && (
                            <div className="product-box">
-                              <Products products={visibleProducts} category={''} />
+                              <Products products={visibleProducts} category={''} addToCart={addToCart} />
                            </div>
                         )
                      }

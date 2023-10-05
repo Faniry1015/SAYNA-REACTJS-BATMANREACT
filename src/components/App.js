@@ -25,11 +25,11 @@ function App() {
                      <Route index element={<Home />} />
                      <Route path="game" element={<Game />} />
                      <Route path="eshop" element={<Eshop />} />
+                     <Route path="eshop/cart" element={<Cart />} />
                      <Route path="compte" element={
-                     <ProtectedRoutes route="login">
-                        <MonCompte />
-                     </ProtectedRoutes>} />
-                     <Route path="cart" element={<Cart />} />
+                        <ProtectedRoutes route="login">
+                           <MonCompte />
+                        </ProtectedRoutes>} />
                      <Route path="signup" element={<Signup />} />
                      <Route path="login" element={<Login />} />
                      <Route path="forgotPassword" element={<ForgotPassword />} />
