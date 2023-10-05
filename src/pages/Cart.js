@@ -15,8 +15,9 @@ function Cart() {
 
     const queryCartItems = await getDocs(collection(db, `Cart-${user.uid}`));
     queryCartItems.forEach((doc) => {
+      const item = doc.data()
       // doc.data() is never undefined for query doc snapshots
-      // setCartProducts(cartProducts.push(doc.data()))
+      setCartProducts(cartProducts.push(item))
     });
     console.log(cartProducts)
   }
