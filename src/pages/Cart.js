@@ -15,17 +15,15 @@ function Cart() {
 
     const queryCartItems = await getDocs(collection(db, `Cart-${user.uid}`));
     queryCartItems.forEach((doc) => {
-      const item = doc.data()
       // doc.data() is never undefined for query doc snapshots
-      console.log(item);
-      setCartProducts(cartProducts.push(item))
-      console.log(cartProducts)
+      // setCartProducts(cartProducts.push(doc.data()))
     });
+    console.log(cartProducts)
   }
 
   useEffect(function () {
     cartItems()
-  }, [cartItems])
+  }, [])
 
 
   return (<>
