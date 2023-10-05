@@ -162,9 +162,13 @@ section {
   justify-content: center;
 }
 
-.btnContain__btn {
+.btnContain__btn, button {
+  font-family: 'Rajdhani';
+  font-size: medium;
+  font-weight: 400;
   text-align: center;
-  width: 200px;
+  color: white;
+  min-width: 200px;
   padding: 10px;
   margin: 0 10px;
   border: none;
@@ -172,13 +176,14 @@ section {
 }
 
 .btnContain__btn:hover,
+button:hover,
+button:focus,
 .btnContain__btn:focus {
   background: linear-gradient(80deg, #EDDEBF, #890008);
   cursor:pointer;
 }
 
-.btnContain__btn a,
-.btnContain__btn {
+.btnContain__btn a {
   font-family: 'Rajdhani';
   font-size: medium;
   font-weight: 400;
