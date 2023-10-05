@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import '../styles/Cart.css'
 import { collection, getDocs } from "firebase/firestore";
@@ -7,8 +7,9 @@ import { db } from '../config-firebase';
 import CartProducts from '../components/CartProducts';
 
 function Cart() {
+  const [cartProducts, setCartProducts] = useState([])
+
   const { user } = UserAuth()
-  const cartItemsArray = []
 
   const cartItems = async function () {
 
@@ -17,6 +18,8 @@ function Cart() {
       const item = doc.data()
       // doc.data() is never undefined for query doc snapshots
       console.log(item);
+      setCartProducts(cartProducts.push(item))
+      console.log(cartProducts)
     });
   }
 
@@ -47,7 +50,7 @@ function Cart() {
         <p>Récapitulatif du panier</p>
       </div>
       <div className="product-box">
-        <CartProducts/>
+        <CartProducts cartProducts={cartProducts}/>
       </div>
 
       <div className="sous-total container-largeur">
