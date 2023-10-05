@@ -4,6 +4,7 @@ import '../styles/Cart.css'
 import { collection, getDocs } from "firebase/firestore";
 import { UserAuth } from '../context/AuthContext';
 import { db } from '../config-firebase';
+import CartProducts from '../components/CartProducts';
 
 function Cart() {
   const { user } = UserAuth()
@@ -44,6 +45,9 @@ function Cart() {
       </div>
       <div className="recap">
         <p>Récapitulatif du panier</p>
+      </div>
+      <div className="product-box">
+        <CartProducts/>
       </div>
 
       <div className="sous-total container-largeur">
