@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import '../styles/Cart.css'
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
 import { UserAuth } from '../context/AuthContext';
 import { db } from '../config-firebase';
 import CartProducts from '../components/CartProducts';
@@ -11,20 +11,27 @@ function Cart() {
 
   const { user } = UserAuth()
 
-  const cartItems = async function () {
+  //Récupérer tous le panier depuis firebase
 
-    const queryCartItems = await getDocs(collection(db, `Cart-${user.uid}`));
-    queryCartItems.forEach((doc) => {
-      const item = doc.data()
-      // doc.data() is never undefined for query doc snapshots
-      setCartProducts(cartProducts.push(item))
-    });
-    console.log(cartProducts)
+
+  const getAllCartProduct = async function () {
+    if(user) {
+      const productsCartArray = []
+      const querySnapShot = await getDocs(collection(db, `Cart-${user.uid}`));
+      querySnapShot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        productsCartArray.push({id:doc.id,...doc.data()})
+        setCartProducts(productsCartArray)
+      })
+    } else {
+      alert('Connectez vous à un compte pour pouvoir faire des achats')
+    }
   }
 
-  useEffect(function () {
-    cartItems()
-  }, [])
+  useEffect( function () {
+    getAllCartProduct()
+    // eslint-disable-next-line
+  }, [user])
 
 
   return (<>

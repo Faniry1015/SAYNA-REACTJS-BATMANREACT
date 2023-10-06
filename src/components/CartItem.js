@@ -1,21 +1,22 @@
 import React from 'react'
 
-function CartItem({CartProductItem}) {
+function CartItem({cartProductItem}) {
+    console.log(cartProductItem)
     return (
-        <>
+        <>   
             <div className="d-flex justify-content-between align-items-center border-product">
                 <div className="product d-flex align-items-center">
-                    <img style={{ width: '30%' }} src="" alt="" />
+                    <img style={{ width: '30%' }} src={cartProductItem.imgUrl} alt={cartProductItem.nom} />
                     <div className="m-4">
-                        <h5>Nom du Produit</h5>
-                        <span>Numéro du produit xxxx</span>
+                        <h5>{cartProductItem.nom}</h5>
+                        <span>Numéro du produit {cartProductItem.id}</span>
                     </div>
                 </div>
                 <div className='price'>
-                    <p>36$</p>
+                    <p>{cartProductItem.prix}$</p>
                 </div>
                 <div className="qte bg-secondary">
-                    <i className="fa-solid fa-minus mx-4"></i><span className="fs-4">1</span>
+                    <i className="fa-solid fa-minus mx-4"></i><span className="fs-4">{cartProductItem.quantité}</span>
                     <i className="fa-regular fa-2x fa-plus mx-4"></i>
                 </div>
                 <div className="delete">
