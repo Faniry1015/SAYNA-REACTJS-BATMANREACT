@@ -1,13 +1,13 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { UserAuth } from '../context/AuthContext'
-import { db } from '../config-firebase'
-import { doc, deleteDoc, updateDoc, getDocs  } from "firebase/firestore";
+// import { db } from '../config-firebase'
+// import { doc, deleteDoc, updateDoc, getDocs  } from "firebase/firestore";
 
 
-function CartItem({ cartProductItem }) {
+function CartItem({ cartProductItem, deleteItem, qttChange }) {
     const { user } = UserAuth()
     const [itemsState, setItemsState] = useState(cartProductItem)
-    const ProductDomRef = useRef()
+    // const ProductDomRef = useRef()
 
     function handleCartProduct(e) {
         if (user) {
@@ -19,42 +19,16 @@ function CartItem({ cartProductItem }) {
                 case 'decrease': qttChange(cartProductItem, 'decrease')
                 break   
             }
+            setItemsState(cartProductItem)
+            console.log('itemsState',cartProductItem)
         }
-    }
 
-    async function deleteItem(product) {
-        await deleteDoc(doc(db, `Cart-${user.uid}`, product.nom))
-        ProductDomRef.current.remove()
-    }
-
-    async function qttChange(product, change) {
-        const product_cart = product
-        if (change === 'increase') {
-            ++product_cart.quantité
-        } else {
-            if (product_cart.quantité > 1) {
-                --product_cart.quantité
-            }
-        }
-        product_cart.prixTotalArticles = product_cart.quantité *  product_cart.prix
-
-        setItemsState({quantité: product_cart.quantité, prixTotalArticles: product_cart.prixTotalArticles, ...product_cart})
-
-        try {
-            const cartProductRef = doc(db, `Cart-${user.uid}`, product.nom)
-            await updateDoc(cartProductRef, {
-                quantité: product_cart.quantité,
-                prixTotalArticles: product_cart.prixTotalArticles    
-            });
-        } catch(e) {
-            alert('Impossible de mettre à jour les articles du panier:', e.message)
-        }
     }
 
     const {nom, imgUrl, id, prixTotalArticles, quantité} = itemsState
     return (
         <>
-            <div className="d-flex justify-content-between align-items-center border-product" ref={ProductDomRef}>
+            <div className="d-flex justify-content-between align-items-center border-product">
                 <div className="product d-flex align-items-center">
                     <img style={{ width: '30%' }} src={imgUrl} alt={nom} />
                     <div className="m-4">

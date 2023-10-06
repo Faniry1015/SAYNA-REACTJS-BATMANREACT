@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import '../styles/Cart.css'
-import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
+import { collection, getDocs, doc, updateDoc, deleteDoc } from "firebase/firestore";
 import { UserAuth } from '../context/AuthContext';
 import { db } from '../config-firebase';
 import CartProducts from '../components/CartProducts';
@@ -25,17 +25,44 @@ function Cart() {
     } else {
       alert('Connectez vous à un compte pour pouvoir faire des achats')
     }
-    console.log('cart', cartProducts)
+    console.log("render")
   }
 
-  useEffect(function () {
-    getAllCartProduct()
-    // eslint-disable-next-line
-  }, [user])
+  const deleteItem = async function (product) {
+    await deleteDoc(doc(db, `Cart-${user.uid}`, product.nom))
+    console.log('Item deleted')
+    // ProductDomRef.current.remove()
+}
 
-  const getSubTotal = () => {
-    
-  }
+  const qttChange = async function (product, change) {
+    const product_cart = product
+    console.log('Item qtt increased')
+    if (change === 'increase') {
+        ++product_cart.quantité
+    } else {
+        if (product_cart.quantité > 1) {
+            --product_cart.quantité
+        }
+    }
+    product_cart.prixTotalArticles = product_cart.quantité *  product_cart.prix
+
+    // setItemsState({quantité: product_cart.quantité, prixTotalArticles: product_cart.prixTotalArticles, ...product_cart})
+
+    try {
+        const cartProductRef = doc(db, `Cart-${user.uid}`, product.nom)
+        await updateDoc(cartProductRef, {
+            quantité: product_cart.quantité,
+            prixTotalArticles: product_cart.prixTotalArticles    
+        });
+    } catch(e) {
+        alert('Impossible de mettre à jour les articles du panier:', e.message)
+    }
+}
+
+useEffect(function () {
+  getAllCartProduct()
+  // eslint-disable-next-line
+}, [user])
   
 
   return (<>
@@ -60,7 +87,7 @@ function Cart() {
         <p>Récapitulatif du panier</p>
       </div>
       <div className="product-box">
-        <CartProducts cartProducts={cartProducts} />
+        <CartProducts cartProducts={cartProducts} deleteItem={deleteItem} qttChange={qttChange}/>
       </div>
 
       <div className="sous-total container-largeur">

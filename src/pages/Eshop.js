@@ -1,5 +1,5 @@
 import { React, useEffect, useState } from "react";
-import { collection, getDocs, setDoc, doc, updateDoc } from "firebase/firestore";
+import { collection, getDocs, setDoc, doc } from "firebase/firestore";
 import HeroShop from "../components/HeroShop";
 // import Products from "../data/Products";
 import { Link } from "react-router-dom";
