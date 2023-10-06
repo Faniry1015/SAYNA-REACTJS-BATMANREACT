@@ -1,7 +1,6 @@
 import React from 'react'
 
 function CartItem({cartProductItem}) {
-    console.log(cartProductItem)
     return (
         <>   
             <div className="d-flex justify-content-between align-items-center border-product">

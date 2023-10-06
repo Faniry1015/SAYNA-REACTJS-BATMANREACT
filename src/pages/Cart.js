@@ -15,12 +15,12 @@ function Cart() {
 
 
   const getAllCartProduct = async function () {
-    if(user) {
+    if (user) {
       const productsCartArray = []
       const querySnapShot = await getDocs(collection(db, `Cart-${user.uid}`));
       querySnapShot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
-        productsCartArray.push({id:doc.id,...doc.data()})
+        productsCartArray.push({ id: doc.id, ...doc.data() })
         setCartProducts(productsCartArray)
       })
     } else {
@@ -28,7 +28,7 @@ function Cart() {
     }
   }
 
-  useEffect( function () {
+  useEffect(function () {
     getAllCartProduct()
     // eslint-disable-next-line
   }, [user])
@@ -56,7 +56,7 @@ function Cart() {
         <p>Récapitulatif du panier</p>
       </div>
       <div className="product-box">
-        <CartProducts cartProducts={cartProducts}/>
+        <CartProducts cartProducts={cartProducts} />
       </div>
 
       <div className="sous-total container-largeur">
@@ -75,14 +75,16 @@ function Cart() {
         </button>
       </Link>
     </section>
-    <br />
-    <br />
-    <h1 className="text-center">Ton panier est vide</h1>
-    <div className="container-largeur">
-      <Link to='/eshop'>
-        <button>Faire des Achats</button>
-      </Link>
-    </div>
+    {cartProducts.length <= 0 && <>
+      <br />
+      <br />
+      <h1 className="text-center">Ton panier est vide</h1>
+      <div className="container-largeur">
+        <Link to='/eshop'>
+          <button>Faire des Achats</button>
+        </Link>
+      </div>
+    </>}
   </>
   )
 }
