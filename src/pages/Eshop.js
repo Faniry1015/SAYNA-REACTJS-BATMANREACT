@@ -63,11 +63,15 @@ function Eshop() {
       product_cart = product
       product_cart['quantité'] = 1
       product_cart['prixTotalArticles'] = product_cart.quantité * product_cart.prix
-      try {
-         // Add a new document with a generated id
-         const cartRef = doc(collection(db, `Cart-${user.uid}`));
 
-         await setDoc(cartRef, product_cart);
+      try {
+         //Pour éviter qu'un produit puisse être ajouter plusieurs fois dans le panier via eshop
+         await setDoc(doc(db, `Cart-${user.uid}`, product.nom), product_cart);
+         console.log(product)
+
+         // Add a new document with a generated id
+         // const cartRef = doc(collection(db, `Cart-${user.uid}`));
+         // await setDoc(cartRef, product_cart);
       } catch (e) {
          console.log(e.message)
       }

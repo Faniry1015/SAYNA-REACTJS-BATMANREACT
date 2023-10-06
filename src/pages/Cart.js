@@ -13,7 +13,6 @@ function Cart() {
 
   //Récupérer tous le panier depuis firebase
 
-
   const getAllCartProduct = async function () {
     if (user) {
       const productsCartArray = []
@@ -26,6 +25,7 @@ function Cart() {
     } else {
       alert('Connectez vous à un compte pour pouvoir faire des achats')
     }
+    console.log('cart', cartProducts)
   }
 
   useEffect(function () {
@@ -33,6 +33,10 @@ function Cart() {
     // eslint-disable-next-line
   }, [user])
 
+  const getSubTotal = () => {
+    
+  }
+  
 
   return (<>
     <div className="container container-largeur">
@@ -61,7 +65,7 @@ function Cart() {
 
       <div className="sous-total container-largeur">
         <h4 className="float-end">
-          {/* <strong>Sous Total : 233</strong> */}
+          <strong>Sous Total : 233</strong>
         </h4>
       </div>
     </div>
