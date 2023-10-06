@@ -8,6 +8,7 @@ import CartProducts from '../components/CartProducts';
 
 function Cart() {
   const [cartProducts, setCartProducts] = useState([])
+  const [state, setState] = useState({totalPayment: 0, totalArticles: 0})
 
   const { user } = UserAuth()
 
@@ -20,23 +21,20 @@ function Cart() {
       querySnapShot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
         productsCartArray.push({ id: doc.id, ...doc.data() })
-        setCartProducts(productsCartArray)
       })
+      setCartProducts(productsCartArray)
     } else {
       alert('Connectez vous à un compte pour pouvoir faire des achats')
     }
-    console.log("render")
   }
 
   const deleteItem = async function (product) {
     await deleteDoc(doc(db, `Cart-${user.uid}`, product.nom))
-    console.log('Item deleted')
     // ProductDomRef.current.remove()
 }
 
   const qttChange = async function (product, change) {
     const product_cart = product
-    console.log('Item qtt increased')
     if (change === 'increase') {
         ++product_cart.quantité
     } else {
@@ -55,14 +53,33 @@ function Cart() {
             prixTotalArticles: product_cart.prixTotalArticles    
         });
     } catch(e) {
-        alert('Impossible de mettre à jour les articles du panier:', e.message)
+        alert('Impossible de mettre à jour les articles du panier:', e.message) 
     }
 }
 
 useEffect(function () {
   getAllCartProduct()
+  console.log(cartProducts)
   // eslint-disable-next-line
 }, [user])
+
+useEffect(() => {
+  const totalPaiementArray = cartProducts.map((product) => {
+    return product.prixTotalArticles
+  })  
+  const totalArticlesArray = cartProducts.map((product) => {
+    return product.quantité
+  })  
+  
+  const add = function(arr) {
+    return arr.reduce((a, b) => a + b, 0);
+  };
+  
+  let sumPayement = add(totalPaiementArray);
+  let sumArticles = add(totalArticlesArray);
+  setState({...state, totalPayment: sumPayement, totalArticles: sumArticles})
+  console.log('total:', sumPayement, sumArticles);
+}, [cartProducts])
   
 
   return (<>
@@ -91,9 +108,10 @@ useEffect(function () {
       </div>
 
       <div className="sous-total container-largeur">
-        <h4 className="float-end">
-          <strong>Sous Total : 233</strong>
-        </h4>
+        <h3 className="float-end">
+          <strong>Nombre total d'Articles : {state.totalArticles}</strong> <br />
+          <strong>Total à payer : {state.totalPayment}$</strong>
+        </h3>
       </div>
     </div>
     <section className="container container-largeur d-flex mx-auto my-5">
