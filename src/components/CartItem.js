@@ -24,7 +24,7 @@ function CartItem({ cartProductItem, deleteItem, qttChange }) {
             }
             setItemsState({...cartProductItem})
 
-            if (e.target.name === 'delete') {
+            if (e.target.id === 'delete') {
                 deleteRef.current.remove()
             }
         }

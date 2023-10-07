@@ -13,24 +13,26 @@ function Cart() {
   const { user } = UserAuth()
 
   //Récupérer tous le panier depuis firebase
-
+  const productsCartArray = []
   const getAllCartProduct = async function () {
     if (user) {
-      const productsCartArray = []
       const querySnapShot = await getDocs(collection(db, `Cart-${user.uid}`));
       querySnapShot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
         productsCartArray.push({ id: doc.id, ...doc.data() })
       })
-      setCartProducts(productsCartArray)
+      setCartProducts([...productsCartArray])
     } else {
       alert('Connectez vous à un compte pour pouvoir faire des achats')
     }
   }
+  
+useEffect(function () {
+  getAllCartProduct()
+}, [user])
 
+//Gestion des produits dans le panier
   const deleteItem = async function (product) {
     await deleteDoc(doc(db, `Cart-${user.uid}`, product.nom))
-    // ProductDomRef.current.remove()
 }
 
   const qttChange = async function (product, change) {
@@ -44,8 +46,6 @@ function Cart() {
     }
     product_cart.prixTotalArticles = product_cart.quantité *  product_cart.prix
 
-    // setItemsState({quantité: product_cart.quantité, prixTotalArticles: product_cart.prixTotalArticles, ...product_cart})
-
     try {
         const cartProductRef = doc(db, `Cart-${user.uid}`, product.nom)
         await updateDoc(cartProductRef, {
@@ -57,13 +57,7 @@ function Cart() {
     }
 }
 
-useEffect(function () {
-  getAllCartProduct()
-  console.log(cartProducts)
-  // eslint-disable-next-line
-}, [user])
-
-useEffect(() => {
+useEffect( () => {
   const totalPaiementArray = cartProducts.map((product) => {
     return product.prixTotalArticles
   })  
@@ -77,12 +71,12 @@ useEffect(() => {
   
   let sumPayement = add(totalPaiementArray);
   let sumArticles = add(totalArticlesArray);
-  setState({...state, totalPayment: sumPayement, totalArticles: sumArticles})
-  console.log('total:', sumPayement, sumArticles);
+  setState((state, props) => ({...state, totalPayment: sumPayement, totalArticles: sumArticles}))
 }, [cartProducts])
   
 
   return (<>
+  {/* {JSON.stringify(cartProducts)} */}
     <div className="container container-largeur">
       <div className="row">
         <div className="d-flex justify-content-between">
