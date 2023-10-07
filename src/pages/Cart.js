@@ -8,7 +8,7 @@ import CartProducts from '../components/CartProducts';
 
 function Cart() {
   const [cartProducts, setCartProducts] = useState([])
-  const [state, setState] = useState({totalPayment: 0, totalArticles: 0})
+  const [state, setState] = useState({ totalPayment: 0, totalArticles: 0 })
 
   const { user } = UserAuth()
 
@@ -21,62 +21,76 @@ function Cart() {
         productsCartArray.push({ id: doc.id, ...doc.data() })
       })
       setCartProducts([...productsCartArray])
+      console.log('render')
     } else {
       alert('Connectez vous à un compte pour pouvoir faire des achats')
     }
   }
-  
-useEffect(function () {
-  getAllCartProduct()
-}, [user])
 
-//Gestion des produits dans le panier
+  useEffect(function () {
+    getAllCartProduct()
+  }, [user])
+
+  //Gestion des produits dans le panier
   const deleteItem = async function (product) {
+    const leftProducts = cartProducts.filter((item) => item.nom !== product.nom)
     await deleteDoc(doc(db, `Cart-${user.uid}`, product.nom))
-}
+    setCartProducts([...leftProducts])
+    console.log(cartProducts)
+  }
 
   const qttChange = async function (product, change) {
     const product_cart = product
     if (change === 'increase') {
-        ++product_cart.quantité
+      ++product_cart.quantité
     } else {
-        if (product_cart.quantité > 1) {
-            --product_cart.quantité
-        }
+      if (product_cart.quantité > 1) {
+        --product_cart.quantité
+      }
     }
-    product_cart.prixTotalArticles = product_cart.quantité *  product_cart.prix
+    product_cart.prixTotalArticles = product_cart.quantité * product_cart.prix
 
+    //Mise à jour de l'état
+    const changedProducts = cartProducts.map((item) => {
+      if (item.nom === product.nom) {
+        return { ...product, quantité: product_cart.quantité, prixTotalArticles: product_cart.prixTotalArticles }
+      }
+    })
+
+    setCartProducts([...changedProducts])
+
+    //Mise à jour de la BDD 
     try {
-        const cartProductRef = doc(db, `Cart-${user.uid}`, product.nom)
-        await updateDoc(cartProductRef, {
-            quantité: product_cart.quantité,
-            prixTotalArticles: product_cart.prixTotalArticles    
-        });
-    } catch(e) {
-        alert('Impossible de mettre à jour les articles du panier:', e.message) 
+      const cartProductRef = doc(db, `Cart-${user.uid}`, product.nom)
+      await updateDoc(cartProductRef, {
+        quantité: product_cart.quantité,
+        prixTotalArticles: product_cart.prixTotalArticles
+      });
+    } catch (e) {
+      alert('Impossible de mettre à jour les articles du panier:', e.message)
     }
-}
+  }
 
-useEffect( () => {
-  const totalPaiementArray = cartProducts.map((product) => {
-    return product.prixTotalArticles
-  })  
-  const totalArticlesArray = cartProducts.map((product) => {
-    return product.quantité
-  })  
-  
-  const add = function(arr) {
-    return arr.reduce((a, b) => a + b, 0);
-  };
-  
-  let sumPayement = add(totalPaiementArray);
-  let sumArticles = add(totalArticlesArray);
-  setState((state, props) => ({...state, totalPayment: sumPayement, totalArticles: sumArticles}))
-}, [cartProducts])
-  
+  useEffect(() => {
+    const totalPaiementArray = cartProducts.map((product) => {
+      return product.prixTotalArticles
+    })
+    const totalArticlesArray = cartProducts.map((product) => {
+      return product.quantité
+    })
+
+    const add = function (arr) {
+      return arr.reduce((a, b) => a + b, 0);
+    };
+
+    let sumPayement = add(totalPaiementArray);
+    let sumArticles = add(totalArticlesArray);
+    setState((state, props) => ({ ...state, totalPayment: sumPayement, totalArticles: sumArticles }))
+  }, [cartProducts])
+
 
   return (<>
-  {JSON.stringify(cartProducts)}
+    {/* {JSON.stringify(cartProducts)} */}
     <div className="container container-largeur">
       <div className="row">
         <div className="d-flex justify-content-between">
@@ -98,7 +112,7 @@ useEffect( () => {
         <p>Récapitulatif du panier</p>
       </div>
       <div className="product-box">
-        <CartProducts cartProducts={cartProducts} deleteItem={deleteItem} qttChange={qttChange}/>
+        <CartProducts cartProducts={cartProducts} deleteItem={deleteItem} qttChange={qttChange} />
       </div>
 
       <div className="sous-total container-largeur">

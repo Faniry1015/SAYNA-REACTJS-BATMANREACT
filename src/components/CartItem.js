@@ -22,11 +22,12 @@ function CartItem({ cartProductItem, deleteItem, qttChange }) {
                 default: console.log('Erreur de gestion du panier')
                     break
             }
-            setItemsState({...cartProductItem})
-
+            
             if (e.target.id === 'delete') {
                 deleteRef.current.remove()
             }
+            setItemsState({...cartProductItem})
+
         }
     }
 
