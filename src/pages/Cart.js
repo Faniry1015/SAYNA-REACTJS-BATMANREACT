@@ -13,9 +13,9 @@ function Cart() {
   const { user } = UserAuth()
 
   //Récupérer tous le panier depuis firebase
-  const productsCartArray = []
   const getAllCartProduct = async function () {
     if (user) {
+      const productsCartArray = []
       const querySnapShot = await getDocs(collection(db, `Cart-${user.uid}`));
       querySnapShot.forEach((doc) => {
         productsCartArray.push({ id: doc.id, ...doc.data() })
@@ -76,7 +76,7 @@ useEffect( () => {
   
 
   return (<>
-  {/* {JSON.stringify(cartProducts)} */}
+  {JSON.stringify(cartProducts)}
     <div className="container container-largeur">
       <div className="row">
         <div className="d-flex justify-content-between">
