@@ -7,8 +7,12 @@ import { db } from '../config-firebase';
 import CartProducts from '../components/CartProducts';
 
 function Cart() {
+  console.log('cart')
   const [cartProducts, setCartProducts] = useState([])
-  const [state, setState] = useState({ totalPayment: 0, totalArticles: 0 })
+  const [state, setState] = useState({ 
+    totalPayment: 0, 
+    totalArticles: 0 
+  })
 
   const { user } = UserAuth()
 
@@ -29,7 +33,7 @@ function Cart() {
 
   useEffect(function () {
     getAllCartProduct()
-  }, [])
+  }, [user])
 
   //Gestion des produits dans le panier
   //ENCORE DES BUGS DANS DELETE
@@ -73,6 +77,7 @@ function Cart() {
     }
   }
 
+  //Modification des sous-totaux
   useEffect(() => {
     const totalPaiementArray = cartProducts.map((product) => {
       return product.prixTotalArticles
@@ -87,7 +92,7 @@ function Cart() {
 
     let sumPayement = add(totalPaiementArray);
     let sumArticles = add(totalArticlesArray);
-    setState((state, props) => ({ ...state, totalPayment: sumPayement, totalArticles: sumArticles }))
+    setState((state, props) => ({ totalPayment: sumPayement, totalArticles: sumArticles }))
   }, [cartProducts])
 
 
