@@ -7,7 +7,7 @@ import { UserAuth } from '../context/AuthContext'
 function CartItem({ cartProductItem, deleteItem, qttChange }) {
     const { user } = UserAuth()
     const [itemsState, setItemsState] = useState(cartProductItem)
-    const deleteRef = useRef()
+    const deleteRef = useRef(null)
     // const ProductDomRef = useRef()
 
     const handleCartProduct = (e) => {
@@ -27,7 +27,6 @@ function CartItem({ cartProductItem, deleteItem, qttChange }) {
                 deleteRef.current.remove()
             }
             setItemsState({...cartProductItem})
-
         }
     }
 

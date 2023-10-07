@@ -29,14 +29,14 @@ function Cart() {
 
   useEffect(function () {
     getAllCartProduct()
-  }, [user])
+  }, [])
 
   //Gestion des produits dans le panier
+  //ENCORE DES BUGS DANS DELETE
   const deleteItem = async function (product) {
-    const leftProducts = cartProducts.filter((item) => item.nom !== product.nom)
+    // const leftProducts = cartProducts.filter((item) => item.nom !== product.nom)
+    // setCartProducts([...leftProducts])
     await deleteDoc(doc(db, `Cart-${user.uid}`, product.nom))
-    setCartProducts([...leftProducts])
-    console.log(cartProducts)
   }
 
   const qttChange = async function (product, change) {
@@ -54,6 +54,8 @@ function Cart() {
     const changedProducts = cartProducts.map((item) => {
       if (item.nom === product.nom) {
         return { ...product, quantité: product_cart.quantité, prixTotalArticles: product_cart.prixTotalArticles }
+      } else {
+        return item
       }
     })
 
