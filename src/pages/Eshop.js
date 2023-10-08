@@ -7,6 +7,7 @@ import { db } from "../config-firebase";
 import Products from "../components/Products";
 import { UserAuth } from "../context/AuthContext";
 import '../styles/Eshop.css'
+import PriceFilter from "../components/PriceFilter";
 
 function Eshop() {
    const [products, setProducts] = useState([])
@@ -41,6 +42,8 @@ function Eshop() {
    function handleFilter(e) {
       setVisibleProducts(products.filter(product => product.categorie === e.target.name))
    }
+
+
 
    function handleSearch(e) {
       const searchCaracter = e.target.value.trim().toLowerCase()
@@ -98,10 +101,11 @@ function Eshop() {
                   <div>
                      <input type="text" className="form-control" placeholder="Rechercher..." id="search" name="search" value={search} onChange={handleSearch} />
                   </div>
-                  <h3>Filtrer par catégorie</h3>
-                  <button className="w-100 mb-3 btn-category-filter" name="equipement" onClick={handleFilter}>Equipement</button>
-                  <button className="w-100 mb-3 btn-category-filter" name="vetement" onClick={handleFilter}>Vêtements</button>
-                  <button className="w-100 mb-3 btn-category-filter" name="sac" onClick={handleFilter}>Sac</button>
+                  <h3>Filtres</h3>
+                  <PriceFilter />
+                  <checkbox className="w-100 mb-3 btn-category-filter" name="goodies" onClick={handleFilter}>Goodies</checkbox>
+                  <checkbox className="w-100 mb-3 btn-category-filter" name="vetement" onClick={handleFilter}>Vêtements</checkbox>
+                  <checkbox className="w-100 mb-3 btn-category-filter" name="sac" onClick={handleFilter}>Sac</checkbox>
                </div>
                <div className="col-md-9">
                   <h3 className="text-center">Nos produits</h3>
