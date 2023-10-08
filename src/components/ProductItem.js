@@ -26,8 +26,11 @@ function ProductItem({ product, addToCart }) {
                         <div className="product-price">
                             <span className='deletedPrice'><del>{prix + (prix / 10)}$</del> </span><span className='fw-bold m-1'> {prix} $</span>
                         </div>
-                        <button className='add-to-cart mt-3 w-100 ' onClick={handleAddToCart}>Ajouter</button>
+
                     </div>
+                </div>
+                <div className='addBtnContainer'>
+                    <button className='add-to-cart mt-3 w-100 ' onClick={handleAddToCart}>Ajouter</button>
                 </div>
             </div>
         </>
