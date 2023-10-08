@@ -5,11 +5,13 @@ import '../styles/Products.css'
 function Products({ products, addToCart }) {
     return (
         <>
-            {products.map(product => {
-                return <div key={product.id} className="col-md-4">
-                    <ProductItem  product={product} addToCart={addToCart} />
-                </div>
-            })}
+            <div className="productsContainer">
+                {products.map(product => {
+                    return <div key={product.id} className={`gridChild${product.id}`}>
+                        <ProductItem product={product} addToCart={addToCart} />
+                    </div>
+                })}
+            </div>
         </>
     )
 }

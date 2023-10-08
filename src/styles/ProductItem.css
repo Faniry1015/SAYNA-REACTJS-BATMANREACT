@@ -1,3 +1,22 @@
+.product-img {
+    overflow: hidden;
+}
 .product-img img {
-    width: 100%;
+    width: auto;
+    height: 200px
+}
+
+.deletedPrice {
+    font-size: 0.8em;
+}
+
+.priceNameContainer {
+    height: 150px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.product {
+    border: 2px solid grey;
 }
