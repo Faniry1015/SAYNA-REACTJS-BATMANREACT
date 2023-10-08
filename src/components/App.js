@@ -10,7 +10,6 @@ import NotFound from "../pages/NotFound";
 import Signup from "../pages/Signup";
 import Login from "../pages/Login";
 import Cart from "../pages/Cart";
-import "../styles/App.css";
 import { AuthContextProvider } from "../context/AuthContext";
 import ProtectedRoutes from "./ProtectedRoutes";
 import { ForgotPassword } from "../pages/ForgotPassword";

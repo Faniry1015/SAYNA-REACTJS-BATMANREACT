@@ -1,0 +1,162 @@
+/*SECTION 1*/
+.sect1 {
+    margin: 200px 0 300px;
+}
+
+h1 {
+    font-size: 50px;
+    text-transform:uppercase;
+}
+
+/*SECTION 2*/
+.sec2__firstBigArrow {
+    margin: 70px 0;
+    text-align: center;
+}
+
+h2 {
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.knowImgCont img {
+    width: 100%;
+    margin: 25px 0 75px;
+}
+
+/* QUIZZ */
+#questionnaire {
+    display: none ;
+    justify-content: center;
+}
+
+.showDiv {
+    display: none
+}
+
+#QImgContainer {
+    display: flex;
+}
+
+#mainQ {
+    display: flex;
+    align-items: center;
+}
+
+.questions {
+    min-width: 75%;
+}
+
+.nbreQuestions {
+    margin-bottom: 15px;
+}
+
+#mainQ div{
+    min-width: 40vw;
+    margin-left: 10px;
+}
+
+.card-quizz {
+    font-size: 18px;
+}
+
+.card-image {
+    max-width: 40vw;
+}
+
+.card-image img {
+    max-width: 100%;
+}
+
+.choisirReponse {
+    margin-top: 30px;
+}
+
+.choicesDiv {
+    background-color: grey;
+    padding: 10px 5px;
+    margin: 10px 0;
+}
+
+.choicesDiv label {
+    margin-left: 10px;
+}
+
+input.checkB {
+    width: 1.5em;
+    height: 1.5em;
+    position: relative;
+    top : 2.5px
+}
+
+.btnContain {
+    margin-top: 50px;
+}
+
+/*Résultat final du quizz*/
+#quizzFinal {   
+    display: none;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    min-height: fit-content;
+    width: 100%;
+    min-width: fit-content;
+    background: linear-gradient(120deg, #000000,  #d18109);
+    border-radius: 20px;
+}
+
+#quizzFinalContainer {
+    width: 80%;
+}
+
+#quizzFinal h2 {
+    text-decoration: underline;
+    font-size: 35px;
+}
+
+#quizzFinalContainer p {
+    text-align: center;
+    font-size: 20px;
+}
+
+/* FOOTER */
+footer {
+    padding: 100px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+footer p {
+    font-size: 10px;
+    text-align: center;
+    color: var(--myGreyfull);
+    margin: 20px 0
+}
+
+footer p img {
+    position: relative;
+    bottom: -10px;
+}
+
+footer figure {
+    display: flex;
+    align-items: center;
+}
+
+footer figure img{
+    margin: 0 10px;
+}
+
+/*Effet de transition au scroll - fade in */
+.reveal {
+    opacity : 0;
+    transform : translateX(-50px);
+}
+
+.reveal-visible {
+    opacity : 1;
+    transform: translateX(0);
+    transition: 1.5s
+}
