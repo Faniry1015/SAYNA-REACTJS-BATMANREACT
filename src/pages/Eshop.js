@@ -8,11 +8,13 @@ import Products from "../components/Products";
 import { UserAuth } from "../context/AuthContext";
 import '../styles/Eshop.css'
 import PriceFilter from "../components/PriceFilter";
+import Checkboxfilter from "../components/Checkboxfilter";
 
 function Eshop() {
    const [products, setProducts] = useState([])
    const [visibleProducts, setVisibleProducts] = useState([])
    const [search, setSearch] = useState('')
+   const [maxPrice, setMaxPrice] = useState(200)
    // const [state, setState] = useState({
    //    products: [],
    //    search: '',
@@ -71,17 +73,16 @@ function Eshop() {
          //Pour éviter qu'un produit puisse être ajouter plusieurs fois dans le panier via eshop
          await setDoc(doc(db, `Cart-${user.uid}`, product.nom), product_cart);
          console.log(product)
-
-         // Add a new document with a generated id
-         // const cartRef = doc(collection(db, `Cart-${user.uid}`));
-         // await setDoc(cartRef, product_cart);
       } catch (e) {
          console.log(e.message)
       }
-
    }
 
-   // const { products, search, category } = state
+   //Gestion des filtres
+   const handleMaxPriceChange = (newMaxPrice) => {
+      // Mettre à jour la valeur du prix maximum
+      setMaxPrice(newMaxPrice);
+    };
 
 
    return (
@@ -102,7 +103,8 @@ function Eshop() {
                      <input type="text" className="form-control" placeholder="Rechercher..." id="search" name="search" value={search} onChange={handleSearch} />
                   </div>
                   <h3>Filtres</h3>
-                  <PriceFilter />
+                  <PriceFilter onMaxPriceChange={handleMaxPriceChange} />
+                  <Checkboxfilter categoriesArray={[{nom: 'goodies', label: 'Goodies'}]} />
                   <checkbox className="w-100 mb-3 btn-category-filter" name="goodies" onClick={handleFilter}>Goodies</checkbox>
                   <checkbox className="w-100 mb-3 btn-category-filter" name="vetement" onClick={handleFilter}>Vêtements</checkbox>
                   <checkbox className="w-100 mb-3 btn-category-filter" name="sac" onClick={handleFilter}>Sac</checkbox>

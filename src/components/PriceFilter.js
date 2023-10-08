@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 
-function PriceFilter() {
+function PriceFilter({onMaxPriceChange}) {
   const [maxPrice, setMaxPrice] = useState(200);
 
   const handleMaxPriceChange = (e) => {
-    setMaxPrice(parseInt(e.target.value));
+    const newMaxPrice = parseInt(e.target.value);
+    setMaxPrice(newMaxPrice);
+    // Appel de la fonction de rappel avec la nouvelle valeur du prix maximum
+    onMaxPriceChange(newMaxPrice);
   };
 
   return (
