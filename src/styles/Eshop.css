@@ -14,3 +14,11 @@
 .btn-category-filter {
     min-width: 100px;
 }
+
+.filtersContainer {
+    font-size: 0.9em;
+}
+
+.filtersContainer h4 {
+    font-size: 1.2em;
+}

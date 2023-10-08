@@ -14,14 +14,56 @@ function Eshop() {
    const [products, setProducts] = useState([])
    const [visibleProducts, setVisibleProducts] = useState([])
    const [search, setSearch] = useState('')
-   const [maxPrice, setMaxPrice] = useState(200)
-   // const [state, setState] = useState({
-   //    products: [],
-   //    search: '',
-   //    category: '',
-   // })
 
-   // Read products data from firebase
+   const [maxPrice, setMaxPrice] = useState(200)
+   const [checkChange, setCheckChange] = useState([])
+
+   const categorieArray = [
+      {
+         nom: 'goodies',
+         label: 'Goodies',
+      },
+      {
+         nom: 'vetement',
+         label: 'Vêtement',
+      },
+      {
+         nom: 'multimedia',
+         label: 'Multimédia',
+      },
+      {
+         nom: 'equipement',
+         label: 'Equipement',
+      },
+      {
+         nom: 'poster',
+         label: 'Poster',
+      },
+   ]
+
+   const universArray = [
+      {
+         nom: 'batman',
+         label: 'Batman',
+      },
+      {
+         nom: 'Superman',
+         label: 'Superman',
+      },
+      {
+         nom: 'batmanSuperman',
+         label: 'Batman vs Superman',
+      },
+      {
+         nom: 'justiceLeague',
+         label: 'Justice League',
+      },
+      {
+         nom: 'poster',
+         label: 'Poster',
+      },
+   ]
+
    const getProducts = async () => {
       const productsArray = []
       try {
@@ -82,8 +124,15 @@ function Eshop() {
    const handleMaxPriceChange = (newMaxPrice) => {
       // Mettre à jour la valeur du prix maximum
       setMaxPrice(newMaxPrice);
-    };
+   };
 
+   const handleCheck = (item) =>  {
+   
+   }
+
+   const handleCheckChange = (checkStatus) => {
+      setCheckChange(checkStatus)
+   }
 
    return (
       <>
@@ -97,22 +146,20 @@ function Eshop() {
          </section>
          <div className="container">
             <div className="row">
-               <div className="col-md-3">
-                  <h3>Rechercher</h3>
-                  <div>
+               <div className="col-md-3 filtersContainer">
+                  <div className="mb-5">
+                     <h3>Rechercher</h3>
                      <input type="text" className="form-control" placeholder="Rechercher..." id="search" name="search" value={search} onChange={handleSearch} />
                   </div>
                   <h3>Filtres</h3>
                   <PriceFilter onMaxPriceChange={handleMaxPriceChange} />
-                  <Checkboxfilter categoriesArray={[{nom: 'goodies', label: 'Goodies'}]} />
-                  <checkbox className="w-100 mb-3 btn-category-filter" name="goodies" onClick={handleFilter}>Goodies</checkbox>
-                  <checkbox className="w-100 mb-3 btn-category-filter" name="vetement" onClick={handleFilter}>Vêtements</checkbox>
-                  <checkbox className="w-100 mb-3 btn-category-filter" name="sac" onClick={handleFilter}>Sac</checkbox>
+                  <Checkboxfilter categoriesArray={categorieArray} onCheckChange={handleCheckChange}>Catégorie</Checkboxfilter>
+                  <Checkboxfilter categoriesArray={universArray} onCheckChange={handleCheckChange}>Univers</Checkboxfilter>
                </div>
                <div className="col-md-9">
                   <h3 className="text-center">Nos produits</h3>
                   <section id="products">
-                  {JSON.stringify(visibleProducts.map(product => product.univers))}
+                     {JSON.stringify(visibleProducts.map(product => product.categorie))}
                      {
                         products.length >= 1 && (
                            <div className="product-box">
