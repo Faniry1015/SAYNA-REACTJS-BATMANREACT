@@ -11,12 +11,14 @@ import PriceFilter from "../components/PriceFilter";
 import Checkboxfilter from "../components/Checkboxfilter";
 
 function Eshop() {
+   
    const [products, setProducts] = useState([])
    const [visibleProducts, setVisibleProducts] = useState([])
    const [search, setSearch] = useState('')
 
    const [maxPrice, setMaxPrice] = useState(200)
-   const [checkChange, setCheckChange] = useState([])
+   const [categorieChange, setCategorieChange] = useState([])
+   const [universChange, setUniversChange] = useState([])
 
    const categorieArray = [
       {
@@ -126,12 +128,12 @@ function Eshop() {
       setMaxPrice(newMaxPrice);
    };
 
-   const handleCheck = (item) =>  {
-   
+   const handleCategorieChange = (checkStatusArray) => {
+      setCategorieChange(checkStatusArray)
    }
 
-   const handleCheckChange = (checkStatus) => {
-      setCheckChange(checkStatus)
+   const handleUniversChange = (checkStatusArray) => {
+      setUniversChange(checkStatusArray)
    }
 
    return (
@@ -153,13 +155,14 @@ function Eshop() {
                   </div>
                   <h3>Filtres</h3>
                   <PriceFilter onMaxPriceChange={handleMaxPriceChange} />
-                  <Checkboxfilter categoriesArray={categorieArray} onCheckChange={handleCheckChange}>Catégorie</Checkboxfilter>
-                  <Checkboxfilter categoriesArray={universArray} onCheckChange={handleCheckChange}>Univers</Checkboxfilter>
+                  <Checkboxfilter dataFilterArray={categorieArray} onCheckChange={handleCategorieChange}>Catégorie</Checkboxfilter>
+                  <Checkboxfilter dataFilterArray={universArray} onCheckChange={handleUniversChange}>Univers</Checkboxfilter>
                </div>
+               {/* {JSON.stringify(categorieChange)}
+               {JSON.stringify(universChange)} */}
                <div className="col-md-9">
                   <h3 className="text-center">Nos produits</h3>
                   <section id="products">
-                     {JSON.stringify(visibleProducts.map(product => product.categorie))}
                      {
                         products.length >= 1 && (
                            <div className="product-box">
