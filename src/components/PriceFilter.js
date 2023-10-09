@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import '../styles/PriceFilter.css'
 
 function PriceFilter({ onMaxPriceChange }) {
     const [maxPrice, setMaxPrice] = useState(200);
