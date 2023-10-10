@@ -11,15 +11,6 @@ import PriceFilter from "../components/PriceFilter";
 import Checkboxfilter from "../components/Checkboxfilter";
 
 function Eshop() {
-   
-   const [products, setProducts] = useState([])
-   const [visibleProducts, setVisibleProducts] = useState([])
-   const [search, setSearch] = useState('')
-
-   const [maxPrice, setMaxPrice] = useState(200)
-   const [categorieChange, setCategorieChange] = useState([])
-   const [universChange, setUniversChange] = useState([])
-
    const categorieArray = [
       {
          nom: 'goodies',
@@ -66,6 +57,23 @@ function Eshop() {
       },
    ]
 
+   const [products, setProducts] = useState([])
+   const [visibleProducts, setVisibleProducts] = useState([])
+   const [search, setSearch] = useState('')
+
+   const [maxPrice, setMaxPrice] = useState(200)
+   const [categorieChange, setCategorieChange] = useState([])
+   const [universChange, setUniversChange] = useState([])
+
+   const categoryName = categorieArray.map((categorie) => {
+      return categorie.nom
+   })
+   const universName = universArray.map((univers) => {
+      return univers.nom
+   })
+   const defaultFilterData = { prixMax: 200, categories: categoryName, univers: universName }
+   const [filteredData, setFilteredData] = useState(defaultFilterData)
+
    const getProducts = async () => {
       const productsArray = []
       try {
@@ -90,20 +98,6 @@ function Eshop() {
    }
 
 
-
-   function handleSearch(e) {
-      const searchCaracter = e.target.value.trim().toLowerCase()
-      if (searchCaracter !== "") {
-         setSearch(e.target.value)
-         setVisibleProducts(products.filter(product => {
-            return product.nom.toLowerCase().includes(searchCaracter) || product.description.toLowerCase().includes(searchCaracter) || product.categorie.toLowerCase().includes(searchCaracter)
-         }))
-      } else {
-         setSearch('')
-         setVisibleProducts(products)
-      }
-   }
-
    //Ajouter un produit au panier
    const { user } = UserAuth()
    let product_cart = {};
@@ -122,9 +116,45 @@ function Eshop() {
       }
    }
 
+   //Gestion de la recherche
+   function handleSearch(e) {
+      const searchCaracter = e.target.value.trim().toLowerCase()
+      if (searchCaracter !== "") {
+         setSearch(e.target.value)
+         setVisibleProducts(products.filter(product => {
+            return product.nom.toLowerCase().includes(searchCaracter) || product.categorie.toLowerCase().includes(searchCaracter) || product.description.toLowerCase().includes(searchCaracter)
+         }))
+      } else {
+         setSearch('')
+         setVisibleProducts(products)
+      }
+   }
+
    //Gestion des filtres
+   const handlefilterChange = (filter) => {
+      if (!isNaN(filter)) {
+         console.log(filter)
+         handleMaxPriceChange(filter)
+         setFilteredData({...filteredData, prixMax: filter})
+      } else if (filter[0].nom === 'goodies') {
+         console.log(filter[0].nom)
+         handleCategorieChange(filter)
+         if(filter.categories.length === 0) {
+            setFilteredData({...filteredData, categories: [categorieArray]})
+         } else {
+            console.log(categorieChange)
+            const filteredCat = categorieChange.filter((categorie) => categorie.check)
+            filteredCat.push(categorieChange)
+         }
+      } else if (filter[0].nom === 'batman') {
+         console.log(filter[0].nom)
+         handleUniversChange(filter)
+      } else {
+         throw Error("Erreur de filtre")
+      }
+   }
+
    const handleMaxPriceChange = (newMaxPrice) => {
-      // Mettre à jour la valeur du prix maximum
       setMaxPrice(newMaxPrice);
    };
 
@@ -154,12 +184,11 @@ function Eshop() {
                      <input type="text" className="form-control" placeholder="Rechercher..." id="search" name="search" value={search} onChange={handleSearch} />
                   </div>
                   <h3>Filtres</h3>
-                  <PriceFilter onMaxPriceChange={handleMaxPriceChange} />
-                  <Checkboxfilter dataFilterArray={categorieArray} onCheckChange={handleCategorieChange}>Catégorie</Checkboxfilter>
-                  <Checkboxfilter dataFilterArray={universArray} onCheckChange={handleUniversChange}>Univers</Checkboxfilter>
+                  <PriceFilter onMaxPriceChange={handlefilterChange} />
+                  <Checkboxfilter dataFilterArray={categorieArray} onCheckChange={handlefilterChange}>Catégorie</Checkboxfilter>
+                  <Checkboxfilter id='univers' dataFilterArray={universArray} onCheckChange={handlefilterChange}>Univers</Checkboxfilter>
                </div>
-               {/* {JSON.stringify(categorieChange)}
-               {JSON.stringify(universChange)} */}
+               {JSON.stringify(filteredData)}
                <div className="col-md-9">
                   <h3 className="text-center">Nos produits</h3>
                   <section id="products">
