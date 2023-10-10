@@ -1,7 +1,6 @@
 import { React, useEffect, useState } from "react";
-import { collection, getDocs, setDoc, doc, updateDoc } from "firebase/firestore";
+import { collection, getDocs, setDoc, doc } from "firebase/firestore";
 import HeroShop from "../components/HeroShop";
-// import Products from "../data/Products";
 import { Link } from "react-router-dom";
 import { db } from "../config-firebase";
 import Products from "../components/Products";
@@ -61,18 +60,11 @@ function Eshop() {
    const [visibleProducts, setVisibleProducts] = useState([])
    const [search, setSearch] = useState('')
 
-   const [maxPrice, setMaxPrice] = useState(200)
+   const [maxPrice, setMaxPrice] = useState(null)
    const [categorieChange, setCategorieChange] = useState([])
    const [universChange, setUniversChange] = useState([])
 
-   const categoryName = categorieArray.map((categorie) => {
-      return categorie.nom
-   })
-   const universName = universArray.map((univers) => {
-      return univers.nom
-   })
-   const defaultFilterData = { prixMax: 200, categories: categoryName, univers: universName }
-   const [filteredData, setFilteredData] = useState(defaultFilterData)
+   const [filteredData, setFilteredData] = useState({ prixMax: maxPrice, categories: [], univers: [] })
 
    const getProducts = async () => {
       const productsArray = []
@@ -83,7 +75,6 @@ function Eshop() {
          });
          setProducts(productsArray)
          setVisibleProducts(productsArray)
-         // setState((state, props) => ({ products: productsArray, ...state }))
       } catch (e) {
          console.log(e)
       }
@@ -92,10 +83,6 @@ function Eshop() {
    useEffect(() => {
       getProducts()
    }, [])
-
-   function handleFilter(e) {
-      setVisibleProducts(products.filter(product => product.categorie === e.target.name))
-   }
 
 
    //Ajouter un produit au panier
@@ -130,41 +117,51 @@ function Eshop() {
       }
    }
 
-   //Gestion des filtres
    const handlefilterChange = (filter) => {
       if (!isNaN(filter)) {
-         console.log(filter)
-         handleMaxPriceChange(filter)
-         setFilteredData({...filteredData, prixMax: filter})
+         handleMaxPriceChange(filter);
       } else if (filter[0].nom === 'goodies') {
-         console.log(filter[0].nom)
-         handleCategorieChange(filter)
-         if(filter.categories.length === 0) {
-            setFilteredData({...filteredData, categories: [categorieArray]})
-         } else {
-            console.log(categorieChange)
-            const filteredCat = categorieChange.filter((categorie) => categorie.check)
-            filteredCat.push(categorieChange)
-         }
+         handleCategorieChange(filter);
       } else if (filter[0].nom === 'batman') {
-         console.log(filter[0].nom)
          handleUniversChange(filter)
       } else {
-         throw Error("Erreur de filtre")
+         throw Error("Erreur de filtre");
       }
-   }
+   };
 
    const handleMaxPriceChange = (newMaxPrice) => {
       setMaxPrice(newMaxPrice);
+      updateVisibleProducts({ prixMax: newMaxPrice, categories: filteredData.categories, univers: filteredData.univers });
    };
 
    const handleCategorieChange = (checkStatusArray) => {
-      setCategorieChange(checkStatusArray)
-   }
+      const selectedCategories = checkStatusArray.filter(category => category.checked).map(category => category.nom);
+      const updatedFilter = { prixMax: filteredData.prixMax, categories: selectedCategories, univers: filteredData.univers };
+      updateVisibleProducts(updatedFilter);
+   };
 
    const handleUniversChange = (checkStatusArray) => {
-      setUniversChange(checkStatusArray)
-   }
+      const selectedUnivers = checkStatusArray.filter(univers => univers.checked).map(univers => univers.nom);
+      const updatedFilter = { prixMax: filteredData.prixMax, categories: filteredData.categories, univers: selectedUnivers };
+      updateVisibleProducts(updatedFilter);
+   };
+
+   const updateVisibleProducts = (filter) => {
+      // Appliquer les filtres combinés aux produits
+      const filteredProducts = products.filter(product => {
+         const isPriceFiltered = filter.prixMax !== null ? product.prix <= filter.prixMax : true;
+         const isCategoryFiltered = filter.categories.length === 0 || filter.categories.includes(product.categorie);
+         const isUniversFiltered = filter.univers.length === 0 || filter.univers.includes(product.univers);
+         return isPriceFiltered && isCategoryFiltered && isUniversFiltered;
+      });
+
+      // Mettre à jour les produits visibles avec les produits filtrés
+      setVisibleProducts(filteredProducts);
+
+      // Mettre à jour les données filtrées
+      setFilteredData(filter);
+   };
+
 
    return (
       <>
@@ -188,7 +185,9 @@ function Eshop() {
                   <Checkboxfilter dataFilterArray={categorieArray} onCheckChange={handlefilterChange}>Catégorie</Checkboxfilter>
                   <Checkboxfilter id='univers' dataFilterArray={universArray} onCheckChange={handlefilterChange}>Univers</Checkboxfilter>
                </div>
-               {JSON.stringify(filteredData)}
+               {/* 'FILTEREDDATA'{JSON.stringify(filteredData)}
+               'FILTEREDDATA'{JSON.stringify(products)} */}
+               {/* {JSON.stringify(visibleProducts)} */}
                <div className="col-md-9">
                   <h3 className="text-center">Nos produits</h3>
                   <section id="products">
@@ -215,37 +214,3 @@ function Eshop() {
 }
 
 export default Eshop;
-
-// {/* <ProductList /> */}
-// <h1>Nos Produits</h1>
-// <div
-//    className="row"
-//    style={{
-//       display: "flex",
-//       flexWrap: "wrap"
-//    }}
-// >
-//    {data.map((product) => {
-//       const { id, title, description, price, imageUrl } =
-//          product;
-//       return (
-//          <div className="col-md-4 m-2" key={id}>
-//             <div className="card">
-//                <img
-//                   src={imageUrl}
-//                   className="card-img-top"
-//                   alt={title}
-//                />
-//                <div className="card-body">
-//                   <h5 className="card-title">{title}</h5>
-//                   {/* <p className="card-text">{description}</p> */}
-//                   <p>Prix: {price}$</p>
-//                   <a href="/" className="btn btn-primary">
-//                      Ajouter au panier
-//                   </a>
-//                </div>
-//             </div>
-//          </div>
-//       );
-//    })}
-// </div>
