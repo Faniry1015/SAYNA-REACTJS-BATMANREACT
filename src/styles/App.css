@@ -10,8 +10,6 @@ h3 {
 
 /* POLICES */
 /* Import google fontRajdhani + Space grotesk (alternative à l'utilisation des polices)*/
-/* @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap'); */
-
 @font-face {
   font-family: 'Rajdhani';
   src: url(../police/Rajdhani/Rajdhani-Regular.ttf);
