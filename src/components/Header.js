@@ -19,10 +19,13 @@ function Header() {
                         <li><NavLink to="/">Home</NavLink> </li>
                         <li><NavLink to="game">Game</NavLink></li>
                         <li><NavLink to="eshop">E-Shop</NavLink> </li>
-                        {user ? <li><NavLink to="compte">Mon compte</NavLink></li> : <div>
+                        {user ? <li><NavLink to="compte">Mon compte</NavLink></li> : (
+                            <div>
                             <NavLink to="login"><button className='ms-2 btnContain__btn navBarBtn'>Connection</button></NavLink>
                             <NavLink to="signup"><button className='ms-2 btnContain__btn navBarBtn'>S'inscrire</button></NavLink>
-                        </div>}
+                        </div>
+                        )
+}
                     </ul>
                 </nav>
             </div>

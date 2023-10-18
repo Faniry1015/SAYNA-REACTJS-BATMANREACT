@@ -36,9 +36,9 @@ function Signup() {
             return setState((state, props) => ({ ...state, error: 'Les mots de passes ne sont pas identiques' }))
         }
         //On peut également utilisé le useRef
-        if (password !== passwordConfirmRef.current.value) {
-            return setState((state, props) => ({ ...state, error: 'Les mots de passes ne sont pas identiques' }))
-        }
+        // if (password !== passwordConfirmRef.current.value) {
+        //     return setState((state, props) => ({ ...state, error: 'Les mots de passes ne sont pas identiques' }))
+        // }
 
         // setState((state, props) => ({...state, error:""}));
         try {

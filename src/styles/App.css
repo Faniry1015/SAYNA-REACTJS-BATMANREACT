@@ -12,7 +12,7 @@ h3 {
 /* Import google fontRajdhani + Space grotesk (alternative à l'utilisation des polices)*/
 @font-face {
   font-family: 'Rajdhani';
-  src: url(../police/Rajdhani/Rajdhani-Regular.ttf);
+  src: url(../polices/Rajdhani/Rajdhani-Regular.ttf);
 }
 
 @font-face {
