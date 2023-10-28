@@ -17,7 +17,7 @@ h3 {
 
 @font-face {
   font-family: 'Space Grotesk';
-  src: url(../police/Space_Grotesk/SpaceGrotesk-VariableFont_wght.ttf);
+  src: url(../polices/Space_Grotesk/SpaceGrotesk-VariableFont_wght.ttf);
 }
 
 /* Mise à zéro des marges par défauts et box-sizing*/
@@ -28,36 +28,16 @@ h3 {
 }
 
 /* Effet fadeIn sur tous les éléments */
-h2, h3, h4, figure, img, li, p, .btnContain__btn  {
-  animation: fadeIn 5s normal;
-  -webkit-animation: fadeIn 5s normal;
-  -o-animation: fadeIn 5s normal;
-
+/* Effet fadeIn sur tous les éléments */
+.fadeIn {
+  transform: translateX(-100px);
+  transition: transform 500ms, opacity 600ms;
+  opacity: 0;
 }
 
-@keyframes fadeIn {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
-}
-
-@-moz-keyframes fadeIn {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
-}
-
-@-webkit-keyframes fadeIn {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
-}
-
-@-o-keyframes fadeIn {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
-}
-
-@-ms-keyframes fadeIn {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
+.visible  {
+  transform: translateX(0);
+  opacity: 1;
 }
 
 /* Définition des couleurs de base */

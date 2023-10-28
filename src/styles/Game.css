@@ -26,12 +26,12 @@ h2 {
 
 /* QUIZZ */
 #questionnaire {
-    display: none ;
+    /* display: none ; */
     justify-content: center;
 }
 
 .showDiv {
-    display: none
+    /* display: none */
 }
 
 #QImgContainer {
@@ -95,7 +95,7 @@ input.checkB {
 
 /*Résultat final du quizz*/
 #quizzFinal {   
-    display: none;
+    /* display: none; */
     justify-content: center;
     align-items: center;
     height: 80vh;
