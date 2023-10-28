@@ -8,6 +8,7 @@ import quizzImage from '../assets/Illustrations_game/Batgame_3.png';
 const Game = () => {
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [currentAnswer, setCurrentAnswer] = useState([]);
   const [score, setScore] = useState(0);
   const [showResult, setShowResult] = useState(false);
 
@@ -18,10 +19,6 @@ const Game = () => {
     "Vous êtes véritablement un super fan de l'univers de Batman ! Comices, films, rien ne vous échappe. Bruce Wayne a de quoi être fier, Gotham est en paix et Batman peut prendre sa retraite, vous veillez aux grains"
   ];
 
-  // useEffect(() => {
-  //   fetchQuestions();
-  // }, []);
-
   const fetchQuestions = async () => {
     try {
       const response = await fetch("https://batman-api.sayna.space/questions", {
@@ -31,28 +28,66 @@ const Game = () => {
       });
 
       if (!response.ok) {
-        throw new Error("Erreur de chargement du questionnaire depuis le serveur");
+        // throw new Error("Erreur de chargement du questionnaire depuis le serveur");
+        alert("Erreur de chargement des questionnaires, vérifiez votre connexion internet et actualisez")
       }
 
       const questionsData = await response.json();
       setQuestions(questionsData);
+      const firstQuestion = questionsData[0]
+
+      if (firstQuestion) {
+        const answers = firstQuestion.response.map(choice => {
+          return {
+            isGood : choice.isGood,
+            checked: false
+        }
+      })
+        setCurrentAnswer(answers)
+      }
     } catch (error) {
       console.error("Erreur de chargement du questionnaire", error);
     }
   };
 
-  const handleAnswerSubmit = (selectedChoices) => {
-    const currentQuestion = questions[currentQuestionIndex];
-    const isCorrect = selectedChoices.every((choice, index) => {
-      return choice === currentQuestion.response[index].isGood;
-    });
+  const handleChoiceChange = (e) => {
+    const currentCheckedIndex = parseInt(e.target.name) 
+    const currentCheckedStatus = e.target.checked
+    // console.log(currentAnswer[currentCheckedIndex].checked)
+    const updatedAnswer = currentAnswer.map((item) => {
+      if (currentCheckedIndex === currentAnswer.indexOf(item)) {
+        return {...item, checked: currentCheckedStatus }
+      } else {
+        return item
+      }
+    })
+    setCurrentAnswer(updatedAnswer)
+  }
 
-    if (isCorrect) {
+  const handleAnswerSubmit = () => {
+    let checkAnswers = []
+    checkAnswers = currentAnswer.map((answer) => {
+      return answer.isGood === answer.checked
+    })
+    console.log(checkAnswers)
+
+    if (checkAnswers.every(answer => answer === true)) {
       setScore(score + 1);
     }
 
     if (currentQuestionIndex + 1 < questions.length) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
+      const currentQuestion = questions[currentQuestionIndex]
+
+      if (currentQuestion) {
+        const answers = currentQuestion.response.map(choice => {
+          return {
+            isGood : choice.isGood,
+            checked: false
+        }
+      })
+        setCurrentAnswer(answers)
+      }
     } else {
       setShowResult(true);
     }
@@ -92,8 +127,8 @@ const Game = () => {
           </div>
         </div>
       </section>
-      {JSON.stringify(questions.length)}
-      {JSON.stringify(showResult)}
+      {JSON.stringify(currentAnswer)}
+      {JSON.stringify(score)}
       {questions.length > 0 && !showResult && (
         <section id="questionnaire">
           <div className="questions">
@@ -116,7 +151,7 @@ const Game = () => {
                     <div className="choisirReponse">
                       {questions[currentQuestionIndex].response.map((choice, index) => (
                         <div key={index} className="choicesDiv">
-                          <input type="checkbox" className={`checkB ${choice.isGood}`} />
+                          <input name={index} type="checkbox" className={`checkB ${choice.isGood}`} checked={currentAnswer[index].checked} onChange={handleChoiceChange} />
                           <label>{choice.text}</label>
                         </div>
                       ))}
@@ -127,11 +162,11 @@ const Game = () => {
               <div className="sect2__contentDiv btnContain nextDiv">
                 <div className="btnContain__btn">
                   {currentQuestionIndex + 1 < questions.length ? (
-                    <button className="nextBtn" onClick={() => handleAnswerSubmit([])}>
+                    <button className="nextBtn" onClick={handleAnswerSubmit}>
                       Question suivante
                     </button>
                   ) : (
-                    <button className="nextBtn" onClick={() => handleAnswerSubmit([])}>
+                    <button className="nextBtn" onClick={handleAnswerSubmit}>
                       Voir le résultat
                     </button>
                   )}

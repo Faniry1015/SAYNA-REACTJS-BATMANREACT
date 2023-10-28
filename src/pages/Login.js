@@ -1,5 +1,5 @@
 import {React, useState} from 'react'
-import { useNavigate, Link, NavLink } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { UserAuth } from '../context/AuthContext'
 import "../styles/signup.css"
 
@@ -37,7 +37,6 @@ const { email, password, error } = state
     <section id='hero'>
         <div className="hero-signup-image">
             <div className="container">
-                <h1 className="herotitle text-uppercase text-white"></h1>
                 <section className="inscription">
                     <div className="container formulaire">
                         <div className="head text-center">
