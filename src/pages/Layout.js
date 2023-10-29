@@ -29,7 +29,7 @@ function Layout() {
   return (
     <>
       <div id="appContainer">
-      <div className='backgroundImg'>
+      <div className='backgroundImg w-100'>
         <img src={bgImg} alt="background" />
       </div>
         <div id="appBody">

@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import SideSocial from '../components/SideSocial';
 import '../styles/Game.css';
 import arrowImage from '../assets/logo/flèche_down_header.png';
 import batmanImage from '../assets/Illustrations_game/Batgame_2.png';
-import quizzImage from '../assets/Illustrations_game/Batgame_3.png';
 
 const Game = () => {
   const [questions, setQuestions] = useState([]);
@@ -53,7 +52,6 @@ const Game = () => {
   const handleChoiceChange = (e) => {
     const currentCheckedIndex = parseInt(e.target.name) 
     const currentCheckedStatus = e.target.checked
-    // console.log(currentAnswer[currentCheckedIndex].checked)
     const updatedAnswer = currentAnswer.map((item) => {
       if (currentCheckedIndex === currentAnswer.indexOf(item)) {
         return {...item, checked: currentCheckedStatus }
@@ -76,8 +74,9 @@ const Game = () => {
     }
 
     if (currentQuestionIndex + 1 < questions.length) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-      const currentQuestion = questions[currentQuestionIndex]
+      const nextQuestionIndex = currentQuestionIndex + 1
+      setCurrentQuestionIndex(nextQuestionIndex);
+      const currentQuestion = questions[nextQuestionIndex]
 
       if (currentQuestion) {
         const answers = currentQuestion.response.map(choice => {
@@ -97,12 +96,14 @@ const Game = () => {
     setCurrentQuestionIndex(0);
     setScore(0);
     setShowResult(false);
+    setQuestions([])
   };
 
   return (
     <main>
       <SideSocial />
-      <section className="reveal">
+      {questions.length === 0 && <>
+        <section className="reveal">
         <div className="sect1">
           <h1>Let's play a <br /> Little game</h1>
         </div>
@@ -120,15 +121,14 @@ const Game = () => {
               </figure>
             </div>
             <div className="sect2__contentDiv btnContain">
-              <div className="btnContain__btn">
+              <div className="">
                 <button id="startGame" onClick={fetchQuestions}>Démarrer le quiz</button>
               </div>
             </div>
           </div>
         </div>
       </section>
-      {JSON.stringify(currentAnswer)}
-      {JSON.stringify(score)}
+      </>}
       {questions.length > 0 && !showResult && (
         <section id="questionnaire">
           <div className="questions">
@@ -139,7 +139,7 @@ const Game = () => {
             <div className="card-quizz">
               <div id="QImgContainer">
                 <div className="card-image">
-                  <img id="imgQuizz" src={quizzImage} alt="" />
+                  <img id="imgQuizz" src={require(`../assets/Illustrations_game/Batgame_${currentQuestionIndex+3}.png`)} alt="" />
                 </div>
                 <div id="mainQ">
                   <div className="flexPosition">
@@ -159,8 +159,8 @@ const Game = () => {
                   </div>
                 </div>
               </div>
-              <div className="sect2__contentDiv btnContain nextDiv">
-                <div className="btnContain__btn">
+              <div className="sect2__contentDiv nextDiv">
+                <div className="d-flex justify-content-center mt-5">
                   {currentQuestionIndex + 1 < questions.length ? (
                     <button className="nextBtn" onClick={handleAnswerSubmit}>
                       Question suivante
@@ -177,7 +177,7 @@ const Game = () => {
         </section>
       )}
       {showResult && (
-        <section id="quizzFinal">
+        <section id="quizzFinal" className='d-flex justify-content-center align-items-center'>
           <div id="quizzFinalContainer">
             <h2 className="finalNote">
               <span id="finalScore">{score}</span>/
@@ -185,7 +185,7 @@ const Game = () => {
             </h2>
             <p id="finalLongComment">{fLongComments[score / questions.length * 10 <= 4 ? 0 : score / questions.length * 10 <= 7 ? 1 : 2]}</p>
             <div className="btnContain">
-              <div className="btnContain__btn" id="restartQuizzContainer">
+              <div className="" id="restartQuizzContainer">
                 <button className="restartQuizzLink" onClick={restartQuiz}>Recommencer le quiz</button>
               </div>
             </div>
